@@ -13,10 +13,10 @@ export async function setCredentials(key: string, value: string) {
 
 export async function getCredentials() {
   try {
-    const accessToken = await localStorage.getItem("accessToken");
+    const token = await localStorage.getItem("token");
 
-    if (accessToken !== null) {
-      const credentials: CredentialsToken = { accessToken };
+    if (token !== null) {
+      const credentials: CredentialsToken = { token };
       checkTokenValidity(credentials);
       return credentials;
     }
@@ -26,27 +26,27 @@ export async function getCredentials() {
 }
 
 // On a pas besoin de check le token pour le projet ?
-async function getAccessTokenUsingRefresh(
-  refreshToken: CredentialsToken["refreshToken"]
-) {
-  const BASE_URL = GOLANG_API_BASE_URL;
+// async function getAccessTokenUsingRefresh(
+//   refreshToken: CredentialsToken["refreshToken"]
+// ) {
+//   const BASE_URL = GOLANG_API_BASE_URL;
 
-  const response = await fetch(`${BASE_URL}/auth/refreshToken`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(refreshToken),
-  });
+//   const response = await fetch(`${BASE_URL}/auth/refreshToken`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(refreshToken),
+//   });
 
-  return response.json().then((json) => {
-    return {
-      success: true,
-      accessToken: json.accessToken,
-      refreshToken: json.refreshToken,
-    };
-  });
-}
+//   return response.json().then((json) => {
+//     return {
+//       success: true,
+//       accessToken: json.accessToken,
+//       refreshToken: json.refreshToken,
+//     };
+//   });
+// }
 
 function isTokenExpired(token: string) {
   try {
@@ -62,17 +62,17 @@ function isTokenExpired(token: string) {
 }
 
 export async function checkTokenValidity(credentials: CredentialsToken) {
-  if (!isTokenExpired(credentials.accessToken)) {
+  if (!isTokenExpired(credentials.token)) {
     return credentials;
   }
 
-  if (!isTokenExpired(credentials.accessToken)) {
-    const response = await getAccessTokenUsingRefresh(credentials.refreshToken);
-    await localStorage.setItem("accessToken", response.accessToken);
-    await localStorage.setItem("refreshToken", response.refreshToken);
+  // if (!isTokenExpired(credentials.token)) {
+  //   const response = await getAccessTokenUsingRefresh(credentials.refreshToken);
+  //   await localStorage.setItem("accessToken", response.accessToken);
+  //   await localStorage.setItem("refreshToken", response.refreshToken);
 
-    return response;
-  }
+  //   return response;
+  // }
   console.log("access not available please login");
   return null;
 }
@@ -80,14 +80,14 @@ export async function checkTokenValidity(credentials: CredentialsToken) {
 export async function getUser(userId: string) {
   const BASE_URL = GOLANG_API_BASE_URL;
 
-  const accessToken = await localStorage.getItem("accessToken");
+  const token = await localStorage.getItem("token");
 
   const response = await fetch(`${BASE_URL}/customer/${userId}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: "Bearer " + accessToken,
+      Authorization: "Bearer " + token,
     },
   });
 

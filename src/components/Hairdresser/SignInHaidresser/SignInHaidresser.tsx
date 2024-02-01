@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useState } from "react";
-import { login } from "../../../core/api/login/login";
+import { login } from "../../../core/api/login/customer/login";
 
 export default function SignInHaidresser() {
   const [email, setEmail] = useState<string>();
@@ -88,14 +88,14 @@ export default function SignInHaidresser() {
                 to="/sign-up-haidresser"
                 variant="body2"
               >
-                {"Register a company?"}
+                {"?"}
               </Link>
             </Grid>
           </Grid>
           <Grid container justifyContent="flex-start">
             <Grid item>
               <Link component={RouterLink} to="/sign-up" variant="body2">
-                {"Try to Sign Up as a customer?"}
+                {"Try to Sign In as a customer?"}
               </Link>
             </Grid>
           </Grid>

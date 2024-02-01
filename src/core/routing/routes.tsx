@@ -1,4 +1,3 @@
-import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import SignUp from "../../components/Customer/SignUp/SignUp";
 import SignIn from "../../components/Customer/SignIn/SingIn";

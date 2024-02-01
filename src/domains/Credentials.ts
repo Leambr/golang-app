@@ -6,7 +6,7 @@ export interface UserCredentials {
 }
 
 export interface CredentialsToken {
-  accessToken: string;
+  token: string;
 }
 
 export interface BadCredentialsResponse {
@@ -23,8 +23,7 @@ export interface Customer {
 }
 
 export interface SuccessfulResponse extends CredentialsToken {
-  success: true;
-  user: Customer;
+  token: string;
 }
 
 export interface ErrorResponse {

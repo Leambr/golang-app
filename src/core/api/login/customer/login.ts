@@ -1,8 +1,8 @@
 import {
   AuthenticationResponse,
   UserCredentials,
-} from "../../../domains/Credentials";
-import { GOLANG_API_BASE_URL } from "../../../utils/Constant";
+} from "../../../../domains/Credentials";
+import { GOLANG_API_BASE_URL } from "../../../../utils/Constant";
 
 export const login = (
   email: UserCredentials["email"],
@@ -12,7 +12,6 @@ export const login = (
 
   return fetch(`${BASE_URL}/login/customer`, {
     method: "POST",
-    mode: "no-cors",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -27,6 +26,7 @@ export const login = (
         });
       }
 
+      console.log(response.json());
       if (!response.ok) {
         throw {
           response: response,
@@ -37,10 +37,9 @@ export const login = (
       }
 
       return response.json().then((json) => {
+        console.log("prout");
         return {
-          success: true,
-          accessToken: json.accessToken,
-          user: json.user,
+          token: json.token,
         };
       });
     })

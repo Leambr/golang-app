@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useState } from "react";
-import { login } from "../../../core/api/login/login";
+import { login } from "../../../core/api/login/customer/login";
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>();

@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { login } from "../../../core/api/login/login";
+import { login } from "../../../core/api/login/customer/login";
 
 export default function SignUpHaidresser() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -87,7 +87,7 @@ export default function SignUpHaidresser() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Register Your Company
+            Sign Up
           </Button>
           <Grid container>
             <Grid item>
@@ -103,7 +103,7 @@ export default function SignUpHaidresser() {
           <Grid container>
             <Grid item>
               <Link component={RouterLink} to="/" variant="body2">
-                {"Try to Sign Up as a customer?"}
+                {"Try to Sign In as a customer?"}
               </Link>
             </Grid>
           </Grid>
