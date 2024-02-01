@@ -12,9 +12,9 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useState } from "react";
-import { login } from "../../core/api/login/login";
+import { login } from "../../../core/api/login/login";
 
-export default function SignIn() {
+export default function SignInHaidresser() {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
@@ -42,7 +42,7 @@ export default function SignIn() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign in as Haidresser
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -80,10 +80,22 @@ export default function SignIn() {
           >
             Sign In
           </Button>
-          <Grid container>
+
+          <Grid container justifyContent="flex-start">
             <Grid item>
-              <Link component={RouterLink} to="sign-up" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link
+                component={RouterLink}
+                to="/sign-up-haidresser"
+                variant="body2"
+              >
+                {"Register a company?"}
+              </Link>
+            </Grid>
+          </Grid>
+          <Grid container justifyContent="flex-start">
+            <Grid item>
+              <Link component={RouterLink} to="/sign-up" variant="body2">
+                {"Try to Sign Up as a customer?"}
               </Link>
             </Grid>
           </Grid>
