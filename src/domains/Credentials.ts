@@ -3,6 +3,7 @@ export interface UserCredentials {
   password: string;
   firstname?: string;
   lastname?: string;
+  userType?: string
 }
 
 export interface CredentialsToken {
