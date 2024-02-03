@@ -1,4 +1,8 @@
-import { AuthenticationResponse, UserCredentials } from '../../../domains/Credentials';
+import {
+    AuthenticationResponse,
+    UserCredentials,
+    HairdresserCredentials,
+} from '../../../domains/Credentials';
 import { GOLANG_API_BASE_URL } from '../../../utils/Constant';
 
 export const register = (
@@ -6,7 +10,9 @@ export const register = (
     lastname: UserCredentials['lastname'],
     email: UserCredentials['email'],
     password: UserCredentials['password'],
-    userType: UserCredentials['userType']
+    userType: UserCredentials['userType'],
+    startTime?: HairdresserCredentials['startTime'],
+    endTime?: HairdresserCredentials['endTime']
 ): Promise<AuthenticationResponse> => {
     const BASE_URL = GOLANG_API_BASE_URL;
 
@@ -15,7 +21,14 @@ export const register = (
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ firstname, lastname, email, password }),
+        body: JSON.stringify({
+            firstname,
+            lastname,
+            email,
+            password,
+            ...(startTime ? { start_time: startTime } : {}),
+            ...(endTime ? { end_time: endTime } : {}),
+        }),
     })
         .then((response: Response): Promise<AuthenticationResponse> => {
             if (response.status === 401) {

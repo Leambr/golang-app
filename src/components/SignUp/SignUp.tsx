@@ -12,22 +12,47 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { register } from '../../core/api/register/register';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 export default function SignUp() {
     const [firstName, setFirstName] = useState<string>();
     const [lastName, setLastName] = useState<string>();
     const [email, setEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
+    const [startTime, setStartTime] = useState(null);
+
+    const [endTime, setEndTime] = useState(null);
 
     const { userType } = useParams();
     const hairdresserUser = userType === 'hairdresser';
+    const customerUser = userType === 'customer';
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // faire le register du hairdresser avec les horaires du salon dans la fonction
-        if (firstName && lastName && email && password) {
-            register(firstName, lastName, email, password, userType);
+        if (hairdresserUser) {
+            if (firstName && lastName && email && password && startTime && endTime) {
+                register(firstName, lastName, email, password, userType, startTime, endTime);
+            }
         }
+        if (customerUser) {
+            if (firstName && lastName && email && password) {
+                register(firstName, lastName, email, password, userType);
+            }
+        }
+    };
+
+    const updateStartTime = (newValue) => {
+        const formattedStartTime = newValue ? newValue.format('HH:mm') : null;
+        console.log('🚀 ~ updateStartTime ~ formattedTime:', formattedStartTime);
+
+        setStartTime(formattedStartTime);
+    };
+
+    const updateEndTime = (newValue) => {
+        const formattedEndTime = newValue ? newValue.format('HH:mm') : null;
+        setEndTime(formattedEndTime);
     };
 
     return (
@@ -103,6 +128,28 @@ export default function SignUp() {
                                 }}
                             />
                         </Grid>
+                        {hairdresserUser && (
+                            <>
+                                <Grid item xs={12} sm={6}>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <TimePicker
+                                            label="Start time"
+                                            value={startTime}
+                                            onChange={updateStartTime}
+                                        />
+                                    </LocalizationProvider>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <TimePicker
+                                            label="End time"
+                                            value={endTime}
+                                            onChange={updateEndTime}
+                                        />
+                                    </LocalizationProvider>
+                                </Grid>
+                            </>
+                        )}
                     </Grid>
                     <Button
                         type="submit"
