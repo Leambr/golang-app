@@ -1,22 +1,26 @@
-import React from "react";
-import { createBrowserRouter } from "react-router-dom";
-import SignUp from "../../components/SignUp/SignUp";
-import SignIn from "../../components/SignIn/SingIn";
-import { Layout } from "../../layout/layout";
+import { createBrowserRouter } from 'react-router-dom';
+import SignIn from '../../components/SignIn/SingIn';
+import SignUp from '../../components/SignUp/SignUp';
+import { Layout } from '../../layout/layout';
+import LandingPage from '../../pages/LandingPage/LandingPage';
 
 export const routes = createBrowserRouter([
     {
-        path: "/",
-        element: <Layout />, 
+        path: '/',
+        element: <Layout />,
         children: [
             {
-                path: "/",
-                element: <SignIn />
+                path: '/',
+                element: <LandingPage />,
             },
             {
-                path: "/sign-up",
-                element: <SignUp />
-            }
-        ]
-    }
-])
+                path: '/sign-in/:userType',
+                element: <SignIn />,
+            },
+            {
+                path: '/sign-up/:userType',
+                element: <SignUp />,
+            },
+        ],
+    },
+]);
