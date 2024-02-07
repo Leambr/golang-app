@@ -17,7 +17,6 @@ export async function getCredentials() {
 
         if (token !== null) {
             const credentials: CredentialsToken = { token };
-            checkTokenValidity(credentials);
             return credentials;
         }
     } catch (error) {
