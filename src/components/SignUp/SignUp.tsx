@@ -10,11 +10,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useState } from 'react';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import { register } from '../../core/api/register/register';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { setCredentials } from '../../core/utils/credentials';
 
 export default function SignUp() {
     const [firstName, setFirstName] = useState<string>();
@@ -23,22 +24,54 @@ export default function SignUp() {
     const [password, setPassword] = useState<string>();
     const [startTime, setStartTime] = useState(null);
 
+    const navigate = useNavigate();
+
     const [endTime, setEndTime] = useState(null);
 
     const { userType } = useParams();
     const hairdresserUser = userType === 'hairdresser';
     const customerUser = userType === 'customer';
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (hairdresserUser) {
             if (firstName && lastName && email && password && startTime && endTime) {
-                register(firstName, lastName, email, password, userType, startTime, endTime);
+                const userTokenResponse = await register(
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    userType,
+                    startTime,
+                    endTime
+                );
+                if ('token' in userTokenResponse) {
+                    const userToken = userTokenResponse.token;
+                    console.log(userToken);
+                    setCredentials('token', userToken);
+                    navigate('/home-hairdresser');
+                } else {
+                    console.error("Mauvaises informations d'identification fournies");
+                }
             }
         }
         if (customerUser) {
             if (firstName && lastName && email && password) {
-                register(firstName, lastName, email, password, userType);
+                const userTokenResponse = await register(
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    userType
+                );
+                if ('token' in userTokenResponse) {
+                    const userToken = userTokenResponse.token;
+                    console.log(userToken);
+                    setCredentials('token', userToken);
+                    navigate('/home-customer');
+                } else {
+                    console.error("Mauvaises informations d'identification fournies");
+                }
             }
         }
     };

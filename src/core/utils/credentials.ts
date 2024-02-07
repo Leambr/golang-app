@@ -1,28 +1,37 @@
-import { GOLANG_API_BASE_URL } from "../../utils/Constant";
-
-import { isExpired } from "react-jwt";
-import { CredentialsToken } from "../../domains/Credentials";
+import { GOLANG_API_BASE_URL } from '../../utils/Constant';
+import { useNavigate } from 'react-router-dom';
+import { isExpired } from 'react-jwt';
+import { CredentialsToken } from '../../domains/Credentials';
 
 export async function deleteCredentials(key: string) {
-  await localStorage.deleteItem(key);
+    await localStorage.deleteItem(key);
 }
 
-export async function setCredentials(key: string, value: string) {
-  await localStorage.setItem(key, value);
+export function setCredentials(key: string, value: string) {
+    localStorage.setItem(key, value);
 }
 
 export async function getCredentials() {
-  try {
-    const token = await localStorage.getItem("token");
+    try {
+        const token = await localStorage.getItem('token');
 
-    if (token !== null) {
-      const credentials: CredentialsToken = { token };
-      checkTokenValidity(credentials);
-      return credentials;
+        if (token !== null) {
+            const credentials: CredentialsToken = { token };
+            checkTokenValidity(credentials);
+            return credentials;
+        }
+    } catch (error) {
+        throw new Error('Error getting credentials' + ' : ' + error);
     }
-  } catch (error) {
-    throw new Error("Error getting credentials" + " : " + error);
-  }
+}
+
+export async function verifyCredentials() {
+    const navigate = useNavigate();
+    const token = await getCredentials();
+
+    if (!token) {
+        navigate('/');
+    }
 }
 
 // On a pas besoin de check le token pour le projet ?
@@ -49,53 +58,53 @@ export async function getCredentials() {
 // }
 
 function isTokenExpired(token: string) {
-  try {
-    const ismyTokenExpired = isExpired(token);
+    try {
+        const ismyTokenExpired = isExpired(token);
 
-    if (ismyTokenExpired) {
-      return true;
+        if (ismyTokenExpired) {
+            return true;
+        }
+        return false;
+    } catch (error) {
+        throw new Error('Error checking token expiration');
     }
-    return false;
-  } catch (error) {
-    throw new Error("Error checking token expiration");
-  }
 }
 
 export async function checkTokenValidity(credentials: CredentialsToken) {
-  if (!isTokenExpired(credentials.token)) {
-    return credentials;
-  }
+    if (!isTokenExpired(credentials.token)) {
+        return credentials;
+    }
 
-  // if (!isTokenExpired(credentials.token)) {
-  //   const response = await getAccessTokenUsingRefresh(credentials.refreshToken);
-  //   await localStorage.setItem("accessToken", response.accessToken);
-  //   await localStorage.setItem("refreshToken", response.refreshToken);
+    // if (!isTokenExpired(credentials.token)) {
+    //   const response = await getAccessTokenUsingRefresh(credentials.refreshToken);
+    //   await localStorage.setItem("accessToken", response.accessToken);
+    //   await localStorage.setItem("refreshToken", response.refreshToken);
 
-  //   return response;
-  // }
-  console.log("access not available please login");
-  return null;
+    //   return response;
+    // }
+    console.log('access not available please login');
+    return null;
 }
 
 export async function getUser(userId: string) {
-  const BASE_URL = GOLANG_API_BASE_URL;
+    const BASE_URL = GOLANG_API_BASE_URL;
 
-  const token = await localStorage.getItem("token");
+    const token = await localStorage.getItem('token');
 
-  const response = await fetch(`${BASE_URL}/customer/${userId}`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-    },
-  });
+    const response = await fetch(`${BASE_URL}/customer/${userId}`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        },
+    });
 
-  return response.json().then((json) => {
-    return {
-      success: true,
-      message: json.message,
-      data: json.data,
-    };
-  });
+    return response.json().then((json) => {
+        return {
+            success: true,
+            message: json.message,
+            data: json.data,
+        };
+    });
 }

@@ -6,26 +6,38 @@ import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useState } from 'react';
 import { login } from '../../core/api/login/login';
+import { setCredentials } from '../../core/utils/credentials';
 
 export default function SignIn() {
     const [email, setEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
     const { userType } = useParams();
 
+    const navigate = useNavigate();
+
     const hairdresserUser = userType === 'hairdresser';
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         if (email && password) {
-            login(email, password, userType);
+            const userTokenResponse = await login(email, password, userType);
+
+            if ('token' in userTokenResponse) {
+                const userToken = userTokenResponse.token;
+                console.log(userToken);
+                setCredentials('token', userToken);
+                navigate('/home-customer');
+            } else {
+                console.error("Mauvaises informations d'identification fournies");
+            }
         }
     };
 
