@@ -37,7 +37,7 @@ const data = [
     },
 ];
 
-export default function Pricing() {
+export default function LandingPage() {
     return (
         <>
             <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
