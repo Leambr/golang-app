@@ -1,4 +1,3 @@
-import { HairSalonResponse } from '../../../domains/HairSalon';
 import { GOLANG_API_BASE_URL } from '../../../utils/Constant';
 
 export const hairsalon = (token: string): Promise<any> => {
@@ -31,7 +30,7 @@ export const hairsalon = (token: string): Promise<any> => {
 
             return response.json().then((json) => {
                 return {
-                    data: json.data,
+                    data: json,
                 };
             });
         })

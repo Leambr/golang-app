@@ -1,14 +1,11 @@
 import { getCredentials, verifyCredentials } from '../../core/utils/credentials';
 import { useState, useEffect } from 'react';
-import { HairSalon, HairSalonData, HairSalonResponse } from '../../domains/HairSalon';
 import { hairsalon } from '../../core/api/hairsalon/hairsalon';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-// import { CredentialsToken } from '../../domains/Credentials';
 
 export const CustomerHomePage = () => {
     const [hairSalon, setHairSalon] = useState<any>();
