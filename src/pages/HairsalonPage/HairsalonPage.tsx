@@ -1,29 +1,32 @@
 import { getCredentials, verifyCredentials } from '../../core/utils/credentials';
-import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { hairsalon } from '../../core/api/hairsalon/hairsalon';
+import { hairsalonById } from '../../core/api/hairsalon/hairsalonById';
 import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { useLocation } from 'react-router-dom';
 
-export const CustomerHomePage = () => {
-    const [hairSalon, setHairSalon] = useState<any>();
-    console.log('🚀 ~ CustomerHomePage ~ hairSalon:', hairSalon);
-    const navigate = useNavigate();
+export const HairsalonPage = () => {
+    const [hairSalonById, setHairSalonById] = useState<any>();
+
+    const location = useLocation();
     const [token, setToken] = useState<string>();
 
     useEffect(() => {
         const fetchData = async () => {
+            const searchParams = new URLSearchParams(location.search);
+            const idParam = searchParams.get('id');
             const getToken = await getCredentials();
             setToken(getToken?.token);
 
-            if (getToken?.token) {
+            if (getToken?.token && idParam != null) {
                 // Utiliser getToken?.token directement ici
-                const hairSalonData = await hairsalon(getToken?.token);
+                const hairSalonData = await hairsalonById(getToken?.token, idParam);
+
                 if (hairSalonData) {
-                    setHairSalon(hairSalonData);
+                    setHairSalonById(hairSalonData);
                 } else {
                     console.error(
                         "Une erreur s'est produite lors de la récupération des données du salon de coiffure."
@@ -39,8 +42,8 @@ export const CustomerHomePage = () => {
         <div>
             CustomerHomePage
             <section>
-                {hairSalon ? (
-                    hairSalon.data.map(
+                {hairSalonById ? (
+                    hairSalonById.data.map(
                         (
                             salon: any
                             // Ajoutez salon et index comme arguments de la fonction de rappel
@@ -65,12 +68,7 @@ export const CustomerHomePage = () => {
                                         {/* Ajoutez d'autres données du salon ici */}
                                     </CardContent>
                                     <CardActions>
-                                        <Button
-                                            size="small"
-                                            onClick={() => navigate(`/hairsalon?id=${salon.id}`)}
-                                        >
-                                            Learn More
-                                        </Button>
+                                        <Button size="small">Learn More</Button>
                                     </CardActions>
                                 </Box>
                             </div>

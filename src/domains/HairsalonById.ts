@@ -6,10 +6,9 @@ export interface HairSalon {
     is_accepted: boolean;
 }
 
-export interface HairSalonData {
-    data: HairSalon[] | undefined;
+export interface HairSalonDataByID {
+    data: HairSalon;
 }
-
 
 export interface BadCredentialsResponse {
     success: false;
@@ -20,4 +19,4 @@ export interface ErrorResponse {
     success: false;
 }
 
-export type HairSalonResponse = HairSalonData | BadCredentialsResponse | ErrorResponse;
+export type HairSalonResponse = HairSalonDataByID | BadCredentialsResponse | ErrorResponse;

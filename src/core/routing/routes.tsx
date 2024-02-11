@@ -4,6 +4,7 @@ import SignUp from '../../components/SignUp/SignUp';
 import { Layout } from '../../layout/layout';
 import { CustomerHomePage } from '../../pages/CustomerHomePage/CustomerHomePage';
 import { HaidresserHomePage } from '../../pages/HaidresserHomePage/HaidresserHomePage';
+import { HairsalonPage } from '../../pages/HairsalonPage/HairsalonPage';
 import LandingPage from '../../pages/LandingPage/LandingPage';
 
 export const routes = createBrowserRouter([
@@ -30,6 +31,10 @@ export const routes = createBrowserRouter([
             {
                 path: '/home-hairdresser',
                 element: <HaidresserHomePage />,
+            },
+            {
+                path: '/hairsalon',
+                element: <HairsalonPage />,
             },
         ],
     },
